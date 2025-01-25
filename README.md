@@ -1,10 +1,10 @@
 # eks-node-diagnostic
 
-[![GitHub Actions](https://github.com/guessi/eks-node-diagnostic/actions/workflows/go.yml/badge.svg?branch=master)](https://github.com/guessi/eks-node-diagnostic/actions/workflows/go.yml)
+[![GitHub Actions](https://github.com/guessi/eks-node-diagnostic/actions/workflows/go.yml/badge.svg?branch=main)](https://github.com/guessi/eks-node-diagnostic/actions/workflows/go.yml)
 [![GoDoc](https://godoc.org/github.com/guessi/eks-node-diagnostic?status.svg)](https://godoc.org/github.com/guessi/eks-node-diagnostic)
 [![Go Report Card](https://goreportcard.com/badge/github.com/guessi/eks-node-diagnostic)](https://goreportcard.com/report/github.com/guessi/eks-node-diagnostic)
 [![GitHub release](https://img.shields.io/github/release/guessi/eks-node-diagnostic.svg)](https://github.com/guessi/eks-node-diagnostic/releases/latest)
-[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/guessi/eks-node-diagnostic)](https://github.com/guessi/eks-node-diagnostic/blob/master/go.mod)
+[![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/guessi/eks-node-diagnostic)](https://github.com/guessi/eks-node-diagnostic/blob/main/go.mod)
 
 Friendly `NodeDiagnostic` generator with no Python/SDK required
 

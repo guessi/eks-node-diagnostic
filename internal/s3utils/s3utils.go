@@ -43,7 +43,7 @@ func PresignUrlPutObject(inputCfg types.PresignUrlPutObjectInput) (string, error
 			Key:    aws.String(key),
 		},
 		func(o *s3.PresignOptions) {
-			o.Expires = time.Duration(inputCfg.ExpireSeconds) * time.Second
+			o.Expires = time.Duration(inputCfg.ExpiredSeconds) * time.Second
 		})
 	if err != nil {
 		return "", fmt.Errorf("failed to generate presigned URL: %w", err)

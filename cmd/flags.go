@@ -11,9 +11,9 @@ import (
 	"github.com/guessi/eks-node-diagnostic/internal/types"
 	"github.com/guessi/eks-node-diagnostic/internal/utils"
 	"github.com/guessi/eks-node-diagnostic/internal/validators"
-	"gopkg.in/yaml.v3"
 
 	"github.com/urfave/cli/v2"
+	"sigs.k8s.io/yaml"
 )
 
 var Flags = []cli.Flag{
@@ -33,7 +33,7 @@ var Flags = []cli.Flag{
 		Usage:   "bucket name for the log files",
 	},
 	&cli.IntFlag{
-		Name:    "expire-seconds",
+		Name:    "expired-seconds",
 		Aliases: []string{"t"},
 		Value:   300,
 		Usage:   "expiration time of the presigned-url in seconds",
@@ -59,7 +59,7 @@ func validateAppConfigs(config types.AppConfigs) error {
 		return err
 	}
 
-	for _, nodeName := range config.NodeNames {
+	for _, nodeName := range config.Nodes {
 		if err := validators.ValidateNodeName(nodeName); err != nil {
 			return err
 		}
@@ -69,7 +69,7 @@ func validateAppConfigs(config types.AppConfigs) error {
 		return err
 	}
 
-	if err := validators.ValidateInRange(config.ExpireSeconds, constants.MinExpireSeconds, constants.MaxExpireSeconds); err != nil {
+	if err := validators.ValidateInRange(config.ExpiredSeconds, constants.MinExpireSeconds, constants.MaxExpireSeconds); err != nil {
 		return err
 	}
 	return nil
@@ -89,12 +89,13 @@ func Action() cli.ActionFunc {
 			if err = yaml.Unmarshal(yamlCfg, &cfg); err != nil {
 				return fmt.Errorf("failed to load %s", configFile)
 			}
+			fmt.Printf("%+v\n", cfg)
 		} else {
 			cfg = types.AppConfigs{
-				Region:        c.String("region"),
-				BucketName:    c.String("bucket-name"),
-				ExpireSeconds: c.Int("expire-seconds"),
-				NodeNames: []string{
+				Region:         c.String("region"),
+				BucketName:     c.String("bucket-name"),
+				ExpiredSeconds: c.Int("expired-seconds"),
+				Nodes: []string{
 					c.String("node-name"),
 				},
 			}
@@ -104,12 +105,12 @@ func Action() cli.ActionFunc {
 			return err
 		}
 
-		for _, node := range cfg.NodeNames {
+		for _, node := range cfg.Nodes {
 			presignUrlPutObjectInput := types.PresignUrlPutObjectInput{
-				Region:        cfg.Region,
-				BucketName:    cfg.BucketName,
-				NodeName:      node,
-				ExpireSeconds: cfg.ExpireSeconds,
+				Region:         cfg.Region,
+				BucketName:     cfg.BucketName,
+				NodeName:       node,
+				ExpiredSeconds: cfg.ExpiredSeconds,
 			}
 			url, err := s3utils.PresignUrlPutObject(presignUrlPutObjectInput)
 			if err != nil {

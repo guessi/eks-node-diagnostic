@@ -1,27 +1,31 @@
 package cmd
 
 import (
+	"fmt"
+	"os"
+	"strings"
+
 	"github.com/guessi/eks-node-diagnostic/internal/constants"
 	"github.com/guessi/eks-node-diagnostic/internal/node_diagnostic"
 	"github.com/guessi/eks-node-diagnostic/internal/s3utils"
 	"github.com/guessi/eks-node-diagnostic/internal/types"
 	"github.com/guessi/eks-node-diagnostic/internal/utils"
 	"github.com/guessi/eks-node-diagnostic/internal/validators"
+	"gopkg.in/yaml.v3"
 
 	"github.com/urfave/cli/v2"
 )
 
 var Flags = []cli.Flag{
 	&cli.StringFlag{
+		Name:    "config-file",
+		Aliases: []string{"c"},
+	},
+	&cli.StringFlag{
 		Name:    "region",
 		Aliases: []string{"r"},
 		Value:   "us-east-1",
 		Usage:   "region of the target cluster",
-	},
-	&cli.StringFlag{
-		Name:    "node-name",
-		Aliases: []string{"n"},
-		Usage:   "target node name",
 	},
 	&cli.StringFlag{
 		Name:    "bucket-name",
@@ -34,6 +38,11 @@ var Flags = []cli.Flag{
 		Value:   300,
 		Usage:   "expiration time of the presigned-url in seconds",
 	},
+	&cli.StringFlag{
+		Name:    "node-name",
+		Aliases: []string{"n"},
+		Usage:   "target node name (to support multiple node names, use \"--config-file\")",
+	},
 }
 
 var Commands = []*cli.Command{
@@ -45,13 +54,17 @@ var Commands = []*cli.Command{
 	},
 }
 
-func validateConfig(config types.AppConfig) error {
+func validateAppConfigs(config types.AppConfigs) error {
 	if err := validators.ValidateEmpty("region", config.Region); err != nil {
 		return err
 	}
-	if err := validators.ValidateNodeName(config.NodeName); err != nil {
-		return err
+
+	for _, nodeName := range config.NodeNames {
+		if err := validators.ValidateNodeName(nodeName); err != nil {
+			return err
+		}
 	}
+
 	if err := validators.ValidateEmpty("bucket-name", config.BucketName); err != nil {
 		return err
 	}
@@ -64,23 +77,51 @@ func validateConfig(config types.AppConfig) error {
 
 func Action() cli.ActionFunc {
 	return func(c *cli.Context) error {
-		appConfig := types.AppConfig{
-			Region:        c.String("region"),
-			BucketName:    c.String("bucket-name"),
-			NodeName:      c.String("node-name"),
-			ExpireSeconds: c.Int("expire-seconds"),
+		configFile := c.String("config-file")
+		cfg := types.AppConfigs{}
+
+		if strings.TrimSpace(configFile) != "" {
+			yamlCfg, err := os.ReadFile(configFile)
+			if err != nil {
+				return fmt.Errorf("failed to open %s", configFile)
+			}
+
+			if err = yaml.Unmarshal(yamlCfg, &cfg); err != nil {
+				return fmt.Errorf("failed to load %s", configFile)
+			}
+		} else {
+			cfg = types.AppConfigs{
+				Region:        c.String("region"),
+				BucketName:    c.String("bucket-name"),
+				ExpireSeconds: c.Int("expire-seconds"),
+				NodeNames: []string{
+					c.String("node-name"),
+				},
+			}
 		}
 
-		if err := validateConfig(appConfig); err != nil {
+		if err := validateAppConfigs(cfg); err != nil {
 			return err
 		}
 
-		presignPutObjectUrl, err := s3utils.PresignUrlPutObject(appConfig)
-		if err != nil {
-			return err
-		}
+		for _, node := range cfg.NodeNames {
+			presignUrlPutObjectInput := types.PresignUrlPutObjectInput{
+				Region:        cfg.Region,
+				BucketName:    cfg.BucketName,
+				NodeName:      node,
+				ExpireSeconds: cfg.ExpireSeconds,
+			}
+			url, err := s3utils.PresignUrlPutObject(presignUrlPutObjectInput)
+			if err != nil {
+				return err
+			}
 
-		return node_diagnostic.Render(appConfig.NodeName, presignPutObjectUrl)
+			renderErr := node_diagnostic.Render(node, url)
+			if renderErr != nil {
+				return renderErr
+			}
+		}
+		return nil
 	}
 }
 

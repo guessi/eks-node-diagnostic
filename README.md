@@ -32,6 +32,31 @@ To remove these obstacles, [eks-node-diagnostic](https://github.com/guessi/eks-n
 $ eks-node-diagnostic --help
 ```
 
+Apply in batch:
+
+```bash
+$ cat config.yaml
+---
+region: us-east-1
+expiredSeconds: 300
+bucketName: node-diagnostic-EXAMPLE
+nodes:
+- i-EXAMPLE1111111111
+- i-EXAMPLE2222222222
+- i-EXAMPLE3333333333
+...
+```
+
+```bash
+$ eks-node-diagnostic -c config.yaml | kubectl apply -f -
+nodediagnostic.eks.amazonaws.com/i-EXAMPLE1111111111 created
+nodediagnostic.eks.amazonaws.com/i-EXAMPLE2222222222 created
+nodediagnostic.eks.amazonaws.com/i-EXAMPLE3333333333 created
+...
+```
+
+Apply one-by-one slowly:
+
 ```bash
 $ eks-node-diagnostic -r ${REGION} -n ${NODE} -b ${BUCKET} | kubectl apply -f -
 nodediagnostic.eks.amazonaws.com/i-EXAMPLE created

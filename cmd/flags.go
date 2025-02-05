@@ -89,7 +89,6 @@ func Action() cli.ActionFunc {
 			if err = yaml.Unmarshal(yamlCfg, &cfg); err != nil {
 				return fmt.Errorf("failed to load %s", configFile)
 			}
-			fmt.Printf("%+v\n", cfg)
 		} else {
 			cfg = types.AppConfigs{
 				Region:         c.String("region"),

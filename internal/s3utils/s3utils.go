@@ -35,7 +35,7 @@ func PresignUrlPutObject(inputCfg types.PresignUrlPutObjectInput) (string, error
 	// Generate presigned URL
 	presignClient := s3.NewPresignClient(s3client)
 
-	key := fmt.Sprintf(constants.LogfileNamePattern, inputCfg.Region, inputCfg.NodeName, time.Now().Format(time.RFC3339))
+	key := fmt.Sprintf(constants.LogfileNamePattern, inputCfg.Region, inputCfg.NodeName, time.Now().UTC().Format(time.RFC3339))
 	req, err := presignClient.PresignPutObject(
 		ctx,
 		&s3.PutObjectInput{

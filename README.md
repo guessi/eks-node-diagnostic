@@ -6,7 +6,7 @@
 [![GitHub release](https://img.shields.io/github/release/guessi/eks-node-diagnostic.svg)](https://github.com/guessi/eks-node-diagnostic/releases/latest)
 [![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/guessi/eks-node-diagnostic)](https://github.com/guessi/eks-node-diagnostic/blob/main/go.mod)
 
-Friendly `NodeDiagnostic` generator with no Python/SDK required
+Friendly `NodeDiagnostic` apply with no dependency required
 
 ## 🤔 Why we need this? what it is trying to resolve?
 
@@ -28,6 +28,15 @@ To remove these obstacles, [eks-node-diagnostic](https://github.com/guessi/eks-n
 
 ## 🚀 Quick start
 
+Make sure you are running with v1.2.0 (or newer version)
+
+```bash
+$ eks-node-diagnostic version
+eks-node-diagnostic v1.2.0
+```
+
+Get `config.yaml` ready
+
 ```bash
 $ cat config.yaml
 ---
@@ -40,6 +49,8 @@ nodes:
 - i-EXAMPLE3333333333
 ...
 ```
+
+Execute
 
 ```bash
 $ eks-node-diagnostic

@@ -9,7 +9,7 @@ const (
 	// - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeIdFormat.html
 	// - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyIdFormat.html
 	// - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeAggregateIdFormat.html
-	NodeNameLength        = 17
+	NodeNameLength        = 19
 	NodeNamePrefix        = "i-"
 	NodeNameSuffixPattern = "[a-f0-9]{17}"
 
@@ -20,4 +20,9 @@ const (
 
 	// Log generated pattern
 	LogfileNamePattern = "node-diagnostic/log__%s__%s__%s.tar.gz"
+
+	NodeDiagnosticResourceGroup   = "eks.amazonaws.com"
+	NodeDiagnosticResourceVersion = "v1alpha1"
+	NodeDiagnosticResourceKind    = "NodeDiagnostic"
+	NodeDiagnosticResourceName    = "nodediagnostics"
 )

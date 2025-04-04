@@ -1,5 +1,10 @@
 <!-- markdownlint-disable -->
 
+# v1.3.0 / 2025-04-04
+
+* Build with go1.24.2
+* Bump dependencies
+
 # v1.2.0 / 2025-02-11
 
 * Remove flags support

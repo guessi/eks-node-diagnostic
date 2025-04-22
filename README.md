@@ -34,7 +34,6 @@ Make sure you are running with v1.2.0 (or newer version)
 
 ```bash
 $ eks-node-diagnostic version
-eks-node-diagnostic v1.2.0
 ```
 
 Get `config.yaml` ready

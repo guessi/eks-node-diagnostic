@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"context"
 	"fmt"
 	"os"
 
@@ -10,12 +11,12 @@ import (
 	"github.com/guessi/eks-node-diagnostic/internal/types"
 	"github.com/guessi/eks-node-diagnostic/internal/utils"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 	"sigs.k8s.io/yaml"
 )
 
-func Entry() *cli.App {
-	return &cli.App{
+func Entry() *cli.Command {
+	return &cli.Command{
 		Name:  constants.AppName,
 		Usage: constants.AppUsage,
 		Flags: []cli.Flag{
@@ -33,8 +34,8 @@ func Entry() *cli.App {
 				Action:  utils.Version(),
 			},
 		},
-		Action: func(c *cli.Context) error {
-			configFile := c.String("config-file")
+		Action: func(c context.Context, cmd *cli.Command) error {
+			configFile := cmd.String("config-file")
 
 			yamlCfg, err := os.ReadFile(configFile)
 			if err != nil {

@@ -1,6 +1,7 @@
 package utils
 
 import (
+	"context"
 	"fmt"
 	"regexp"
 
@@ -8,11 +9,11 @@ import (
 	"github.com/guessi/eks-node-diagnostic/internal/types"
 	"github.com/guessi/eks-node-diagnostic/internal/variables"
 
-	"github.com/urfave/cli/v2"
+	"github.com/urfave/cli/v3"
 )
 
 func Version() cli.ActionFunc {
-	return func(ctx *cli.Context) error {
+	return func(ctx context.Context, cmd *cli.Command) error {
 		r := regexp.MustCompile(`v[0-9]\.[0-9]+\.[0-9]+`)
 		fmt.Println(constants.AppName, r.FindString(variables.GitVersion))
 		fmt.Println(" Git Commit:", variables.GitVersion)

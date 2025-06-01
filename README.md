@@ -33,13 +33,13 @@ To remove these obstacles, [eks-node-diagnostic](https://github.com/guessi/eks-n
 Make sure you are running with v1.2.0 (or newer version)
 
 ```bash
-$ eks-node-diagnostic version
+eks-node-diagnostic version
 ```
 
 Get `config.yaml` ready
 
 ```bash
-$ cat config.yaml
+cat config.yaml
 ---
 region: us-east-1
 expiredSeconds: 300
@@ -54,7 +54,7 @@ nodes:
 Execute
 
 ```bash
-$ eks-node-diagnostic
+eks-node-diagnostic
 nodediagnostic.eks.amazonaws.com/i-EXAMPLE1111111111 created
 nodediagnostic.eks.amazonaws.com/i-EXAMPLE2222222222 created
 nodediagnostic.eks.amazonaws.com/i-EXAMPLE3333333333 created

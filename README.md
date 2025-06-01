@@ -77,8 +77,16 @@ How do I report an issue or submit a feature request?
 
 ### For macOS/Linux users (Recommended)
 
+Brand new install
+
 ```bash
 brew tap guessi/tap && brew update && brew install eks-node-diagnostic
+```
+
+To upgrade version
+
+```bash
+brew update && brew upgrade eks-node-diagnostic
 ```
 
 ### Manually setup (Linux, Windows, macOS)

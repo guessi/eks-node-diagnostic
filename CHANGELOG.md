@@ -1,5 +1,9 @@
 <!-- markdownlint-disable -->
 
+# v1.4.1 / 2025-06-28
+
+* Bump dependencies
+
 # v1.4.0 / 2025-05-22
 
 * Migrate to github.com/urfave/cli/v3

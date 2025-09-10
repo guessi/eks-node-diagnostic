@@ -1,5 +1,11 @@
 <!-- markdownlint-disable -->
 
+# v1.5.0 / 2025-09-10
+
+* Built with go1.25
+* Built with Kubernetes SDK v0.34.0
+* Bump dependencies
+
 # v1.4.3 / 2025-08-18
 
 * Bump dependencies

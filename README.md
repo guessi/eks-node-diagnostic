@@ -42,7 +42,8 @@ Get `config.yaml` ready
 cat config.yaml
 ---
 region: us-east-1
-expiredSeconds: 300
+expiredSeconds: 300  # optional, default: 300
+timeout: 30          # optional, default: 30 (in seconds)
 bucketName: node-diagnostic-EXAMPLE
 nodes:
 - i-EXAMPLE1111111111

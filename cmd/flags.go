@@ -34,7 +34,7 @@ func Entry() *cli.Command {
 				Action:  utils.Version(),
 			},
 		},
-		Action: func(c context.Context, cmd *cli.Command) error {
+		Action: func(ctx context.Context, cmd *cli.Command) error {
 			configFile := cmd.String("config-file")
 
 			yamlCfg, err := os.ReadFile(configFile)
@@ -56,7 +56,7 @@ func Entry() *cli.Command {
 				return fmt.Errorf("failed to create kubernetes client: %w", err)
 			}
 
-			s3client, err := s3utils.NewS3Client(cfg.Region)
+			s3client, err := s3utils.NewS3Client(ctx, cfg.Region)
 			if err != nil {
 				return fmt.Errorf("failed to create S3 client: %w", err)
 			}
@@ -64,6 +64,7 @@ func Entry() *cli.Command {
 			var hasErrors bool
 			for _, nodeName := range cfg.Nodes {
 				url, err := s3utils.PresignUrlPutObject(
+					ctx,
 					s3client,
 					types.PresignUrlPutObjectInput{
 						Region:         cfg.Region,
@@ -78,7 +79,7 @@ func Entry() *cli.Command {
 					continue
 				}
 
-				err = k8sclient.Apply(nodeName, url)
+				err = k8sclient.Apply(ctx, nodeName, url)
 				if err != nil {
 					fmt.Printf("failed to apply nodediagnostic for %s: %s\n", nodeName, err)
 					hasErrors = true

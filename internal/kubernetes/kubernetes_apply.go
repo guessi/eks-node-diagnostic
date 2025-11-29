@@ -10,7 +10,7 @@ import (
 	"k8s.io/apimachinery/pkg/runtime/schema"
 )
 
-func (k *CustomizedClient) Apply(node, url string) error {
+func (k *CustomizedClient) Apply(ctx context.Context, node, url string) error {
 	// TODO: apply with structured object
 	obj := &unstructured.Unstructured{
 		Object: map[string]interface{}{
@@ -32,7 +32,7 @@ func (k *CustomizedClient) Apply(node, url string) error {
 			Version:  constants.NodeDiagnosticResourceVersion,
 			Resource: constants.NodeDiagnosticResourceName,
 		},
-	).Create(context.TODO(), obj, metav1.CreateOptions{}); err != nil {
+	).Create(ctx, obj, metav1.CreateOptions{}); err != nil {
 		return err
 	}
 	return nil

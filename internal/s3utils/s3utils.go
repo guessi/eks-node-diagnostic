@@ -13,8 +13,7 @@ import (
 	"github.com/guessi/eks-node-diagnostic/internal/types"
 )
 
-func NewS3Client(region string) (*s3.Client, error) {
-	ctx := context.Background()
+func NewS3Client(ctx context.Context, region string) (*s3.Client, error) {
 	cfg, err := config.LoadDefaultConfig(ctx)
 	if err != nil {
 		return nil, fmt.Errorf("failed to load AWS config: %w", err)
@@ -27,9 +26,7 @@ func NewS3Client(region string) (*s3.Client, error) {
 	return s3client, nil
 }
 
-func PresignUrlPutObject(s3client *s3.Client, inputCfg types.PresignUrlPutObjectInput) (string, error) {
-	ctx := context.Background()
-
+func PresignUrlPutObject(ctx context.Context, s3client *s3.Client, inputCfg types.PresignUrlPutObjectInput) (string, error) {
 	// Check bucket existence
 	if _, err := s3client.HeadBucket(ctx, &s3.HeadBucketInput{
 		Bucket: aws.String(inputCfg.BucketName),

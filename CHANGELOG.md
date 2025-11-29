@@ -1,5 +1,13 @@
 <!-- markdownlint-disable -->
 
+# v1.6.0 / 2025-11-29
+
+* Add configurable timeout for operations (default: 30s)
+* Add default value for expiredSeconds when not specified (default: 300s)
+* Miscellaneous improvements
+* Built with Kubernetes SDK v0.34.2
+* Bump dependencies
+
 # v1.5.0 / 2025-09-10
 
 * Built with go1.25

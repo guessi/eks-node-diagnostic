@@ -18,6 +18,9 @@ const (
 	MinExpireSeconds         = 120
 	MaxExpireSeconds         = 86400
 
+	// Timeout
+	DefaultTimeout = 30 // seconds
+
 	// Log generated pattern
 	LogfileNamePattern = "node-diagnostic/log__%s__%s__%s.tar.gz"
 

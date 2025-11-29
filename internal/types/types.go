@@ -5,6 +5,7 @@ type AppConfigs struct {
 	BucketName     string   `yaml:"bucketName,omitempty"`
 	Nodes          []string `yaml:"nodes,omitempty"`
 	ExpiredSeconds int      `yaml:"expiredSeconds,omitempty"`
+	Timeout        int      `yaml:"timeout,omitempty"` // in seconds
 }
 
 type PresignUrlPutObjectInput struct {

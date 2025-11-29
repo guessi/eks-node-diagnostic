@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/guessi/eks-node-diagnostic/internal/constants"
 	k8s "github.com/guessi/eks-node-diagnostic/internal/kubernetes"
@@ -50,6 +51,14 @@ func Entry() *cli.Command {
 			if err := utils.ValidateAppConfigs(cfg); err != nil {
 				return err
 			}
+
+			// Set timeout with default if not specified
+			timeout := cfg.Timeout
+			if timeout == 0 {
+				timeout = constants.DefaultTimeout
+			}
+			ctx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
+			defer cancel()
 
 			k8sclient, err := k8s.NewKubeClient()
 			if err != nil {

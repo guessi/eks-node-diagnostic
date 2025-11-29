@@ -56,9 +56,15 @@ func Entry() *cli.Command {
 				return fmt.Errorf("failed to create kubernetes client: %w", err)
 			}
 
+			s3client, err := s3utils.NewS3Client(cfg.Region)
+			if err != nil {
+				return fmt.Errorf("failed to create S3 client: %w", err)
+			}
+
 			var hasErrors bool
 			for _, nodeName := range cfg.Nodes {
 				url, err := s3utils.PresignUrlPutObject(
+					s3client,
 					types.PresignUrlPutObjectInput{
 						Region:         cfg.Region,
 						BucketName:     cfg.BucketName,

@@ -53,6 +53,9 @@ func ValidateAppConfigs(config types.AppConfigs) error {
 	if err := ValidateEmpty("region", config.Region); err != nil {
 		return err
 	}
+	if len(config.Nodes) == 0 {
+		return fmt.Errorf("nodes must not be empty")
+	}
 	for _, nodeName := range config.Nodes {
 		if err := ValidateNodeName(nodeName); err != nil {
 			return err

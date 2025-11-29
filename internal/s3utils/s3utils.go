@@ -26,14 +26,16 @@ func NewS3Client(ctx context.Context, region string) (*s3.Client, error) {
 	return s3client, nil
 }
 
-func PresignUrlPutObject(ctx context.Context, s3client *s3.Client, inputCfg types.PresignUrlPutObjectInput) (string, error) {
-	// Check bucket existence
+func ValidateBucket(ctx context.Context, s3client *s3.Client, bucketName string) error {
 	if _, err := s3client.HeadBucket(ctx, &s3.HeadBucketInput{
-		Bucket: aws.String(inputCfg.BucketName),
+		Bucket: aws.String(bucketName),
 	}); err != nil {
-		return "", fmt.Errorf("bucket '%s' not exist or no permission: %w", inputCfg.BucketName, err)
+		return fmt.Errorf("bucket '%s' not exist or no permission: %w", bucketName, err)
 	}
+	return nil
+}
 
+func PresignUrlPutObject(ctx context.Context, s3client *s3.Client, inputCfg types.PresignUrlPutObjectInput) (string, error) {
 	// Generate presigned URL
 	presignClient := s3.NewPresignClient(s3client)
 

@@ -70,6 +70,11 @@ func Entry() *cli.Command {
 				return fmt.Errorf("failed to create S3 client: %w", err)
 			}
 
+			// Validate bucket existence once before processing nodes
+			if err := s3utils.ValidateBucket(ctx, s3client, cfg.BucketName); err != nil {
+				return err
+			}
+
 			var hasErrors bool
 			for _, nodeName := range cfg.Nodes {
 				url, err := s3utils.PresignUrlPutObject(

@@ -64,8 +64,11 @@ func ValidateAppConfigs(config types.AppConfigs) error {
 	if err := ValidateEmpty("bucket-name", config.BucketName); err != nil {
 		return err
 	}
-	if err := ValidateInRange(config.ExpiredSeconds, constants.MinExpireSeconds, constants.MaxExpireSeconds); err != nil {
-		return err
+	// Allow 0 for expiredSeconds (will use default), otherwise validate range
+	if config.ExpiredSeconds != 0 {
+		if err := ValidateInRange(config.ExpiredSeconds, constants.MinExpireSeconds, constants.MaxExpireSeconds); err != nil {
+			return err
+		}
 	}
 	return nil
 }

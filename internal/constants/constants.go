@@ -17,6 +17,7 @@ const (
 	NodeDiagnosticApiVersion = "eks.amazonaws.com/v1alpha1"
 	MinExpireSeconds         = 120
 	MaxExpireSeconds         = 86400
+	DefaultExpireSeconds     = 300 // seconds
 
 	// Timeout
 	DefaultTimeout = 30 // seconds

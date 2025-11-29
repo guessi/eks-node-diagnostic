@@ -60,6 +60,12 @@ func Entry() *cli.Command {
 			ctx, cancel := context.WithTimeout(ctx, time.Duration(timeout)*time.Second)
 			defer cancel()
 
+			// Set expiredSeconds with default if not specified
+			expiredSeconds := cfg.ExpiredSeconds
+			if expiredSeconds == 0 {
+				expiredSeconds = constants.DefaultExpireSeconds
+			}
+
 			k8sclient, err := k8s.NewKubeClient()
 			if err != nil {
 				return fmt.Errorf("failed to create kubernetes client: %w", err)
@@ -84,7 +90,7 @@ func Entry() *cli.Command {
 						Region:         cfg.Region,
 						BucketName:     cfg.BucketName,
 						NodeName:       nodeName,
-						ExpiredSeconds: cfg.ExpiredSeconds,
+						ExpiredSeconds: expiredSeconds,
 					},
 				)
 				if err != nil {

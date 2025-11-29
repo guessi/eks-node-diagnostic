@@ -31,7 +31,7 @@ func PresignUrlPutObject(ctx context.Context, s3client *s3.Client, inputCfg type
 	if _, err := s3client.HeadBucket(ctx, &s3.HeadBucketInput{
 		Bucket: aws.String(inputCfg.BucketName),
 	}); err != nil {
-		return "", fmt.Errorf("bucket not exist or no permission")
+		return "", fmt.Errorf("bucket '%s' not exist or no permission: %w", inputCfg.BucketName, err)
 	}
 
 	// Generate presigned URL

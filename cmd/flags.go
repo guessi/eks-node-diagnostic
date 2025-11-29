@@ -56,6 +56,7 @@ func Entry() *cli.Command {
 				return fmt.Errorf("failed to create kubernetes client: %w", err)
 			}
 
+			var hasErrors bool
 			for _, nodeName := range cfg.Nodes {
 				url, err := s3utils.PresignUrlPutObject(
 					types.PresignUrlPutObjectInput{
@@ -66,15 +67,22 @@ func Entry() *cli.Command {
 					},
 				)
 				if err != nil {
-					return err
+					fmt.Printf("failed to generate presigned URL for %s: %s\n", nodeName, err)
+					hasErrors = true
+					continue
 				}
 
 				err = k8sclient.Apply(nodeName, url)
 				if err != nil {
-					fmt.Printf("%s\n", err)
+					fmt.Printf("failed to apply nodediagnostic for %s: %s\n", nodeName, err)
+					hasErrors = true
 				} else {
 					fmt.Printf("nodediagnostic.eks.amazonaws.com/%s created\n", nodeName)
 				}
+			}
+
+			if hasErrors {
+				return fmt.Errorf("one or more nodes failed to process")
 			}
 			return nil
 		},

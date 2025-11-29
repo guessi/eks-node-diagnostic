@@ -37,7 +37,7 @@ func ValidateNodeName(nodeName string) error {
 
 	r := regexp.MustCompile(constants.NodeNameSuffixPattern)
 	if len(nodeName) != constants.NodeNameLength || !r.MatchString(nodeName[2:]) {
-		return fmt.Errorf("invalid node-name, exepected to have node name with pattern \"%s%s\"", constants.NodeNamePrefix, constants.NodeNameSuffixPattern)
+		return fmt.Errorf("invalid node-name, expected to have node name with pattern \"%s%s\"", constants.NodeNamePrefix, constants.NodeNameSuffixPattern)
 	}
 	return nil
 }

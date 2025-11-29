@@ -9,37 +9,51 @@ import (
 	"k8s.io/client-go/tools/clientcmd"
 )
 
-func NewKubernetesConfig() *rest.Config {
+func NewKubernetesConfig() (*rest.Config, error) {
 	cfg := clientcmd.NewNonInteractiveDeferredLoadingClientConfig(
 		clientcmd.NewDefaultClientConfigLoadingRules(),
 		&clientcmd.ConfigOverrides{})
-	clientConfig, _ := cfg.ClientConfig()
-	return clientConfig
+	clientConfig, err := cfg.ClientConfig()
+	if err != nil {
+		return nil, err
+	}
+	return clientConfig, nil
 }
 
-func NewKubernetesClientSet(cfg *rest.Config) kubernetes.Clientset {
+func NewKubernetesClientSet(cfg *rest.Config) (*kubernetes.Clientset, error) {
 	clientset, err := kubernetes.NewForConfig(cfg)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return *clientset
+	return clientset, nil
 }
 
-func NewDynamicClient(cfg *rest.Config) dynamic.DynamicClient {
+func NewDynamicClient(cfg *rest.Config) (*dynamic.DynamicClient, error) {
 	dynamicClient, err := dynamic.NewForConfig(cfg)
 	if err != nil {
-		panic(err)
+		return nil, err
 	}
-	return *dynamicClient
+	return dynamicClient, nil
 }
 
-func NewKubeClient() *CustomizedClient {
-	cfg := NewKubernetesConfig()
-	dynamicClient := NewDynamicClient(cfg)
-	k8sClientSet := NewKubernetesClientSet(cfg)
+func NewKubeClient() (*CustomizedClient, error) {
+	cfg, err := NewKubernetesConfig()
+	if err != nil {
+		return nil, err
+	}
+
+	dynamicClient, err := NewDynamicClient(cfg)
+	if err != nil {
+		return nil, err
+	}
+
+	k8sClientSet, err := NewKubernetesClientSet(cfg)
+	if err != nil {
+		return nil, err
+	}
 
 	return &CustomizedClient{
-		client:          &dynamicClient,
+		client:          dynamicClient,
 		discoveryMapper: restmapper.NewDeferredDiscoveryRESTMapper(memory.NewMemCacheClient(k8sClientSet.Discovery())),
-	}
+	}, nil
 }

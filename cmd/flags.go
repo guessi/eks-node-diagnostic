@@ -51,6 +51,11 @@ func Entry() *cli.Command {
 				return err
 			}
 
+			k8sclient, err := k8s.NewKubeClient()
+			if err != nil {
+				return fmt.Errorf("failed to create kubernetes client: %w", err)
+			}
+
 			for _, nodeName := range cfg.Nodes {
 				url, err := s3utils.PresignUrlPutObject(
 					types.PresignUrlPutObjectInput{
@@ -64,7 +69,6 @@ func Entry() *cli.Command {
 					return err
 				}
 
-				k8sclient := k8s.NewKubeClient()
 				err = k8sclient.Apply(nodeName, url)
 				if err != nil {
 					fmt.Printf("%s\n", err)

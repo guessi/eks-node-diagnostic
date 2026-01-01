@@ -1,5 +1,10 @@
 <!-- markdownlint-disable -->
 
+# v1.7.0 / 2026-01-01
+
+* Built with Kubernetes SDK v0.35.0
+* Bump dependencies
+
 # v1.6.0 / 2025-11-29
 
 * Add configurable timeout for operations (default: 30s)

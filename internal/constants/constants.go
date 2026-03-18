@@ -23,6 +23,10 @@ const (
 	MaxTimeout     = 300 // seconds
 	DefaultTimeout = 30  // seconds
 
+	// Destination types
+	DestinationTypeS3   = "s3"
+	DestinationTypeNode = "node"
+
 	// Log generated pattern
 	LogfileNamePattern = "node-diagnostic/log__%s__%s__%s.tar.gz"
 

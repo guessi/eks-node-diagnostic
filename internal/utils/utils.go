@@ -52,32 +52,54 @@ func ValidateInRange(fieldName string, input, start, end int) error {
 	return nil
 }
 
+func ValidateDestinationType(destinationType string) error {
+	switch destinationType {
+	case constants.DestinationTypeS3, constants.DestinationTypeNode:
+		return nil
+	default:
+		return fmt.Errorf("destination-type must be %q or %q", constants.DestinationTypeS3, constants.DestinationTypeNode)
+	}
+}
+
 func ValidateAppConfigs(config types.AppConfigs) error {
 	if err := ValidateEmpty("region", config.Region); err != nil {
 		return err
 	}
+
+	if err := ValidateDestinationType(config.DestinationType); err != nil {
+		return err
+	}
+
 	if len(config.Nodes) == 0 {
 		return fmt.Errorf("nodes must not be empty")
 	}
+
 	for _, nodeName := range config.Nodes {
 		if err := ValidateNodeName(nodeName); err != nil {
 			return err
 		}
 	}
-	if err := ValidateEmpty("bucket-name", config.BucketName); err != nil {
-		return err
-	}
-	// Allow 0 for expiredSeconds (will use default), otherwise validate range
-	if config.ExpiredSeconds != 0 {
-		if err := ValidateInRange("expire-seconds", config.ExpiredSeconds, constants.MinExpireSeconds, constants.MaxExpireSeconds); err != nil {
+
+	// S3-specific validations
+	if config.DestinationType == constants.DestinationTypeS3 {
+		if err := ValidateEmpty("bucket-name", config.BucketName); err != nil {
 			return err
 		}
+
+		// Allow 0 for expiredSeconds (will use default), otherwise validate range
+		if config.ExpiredSeconds != 0 {
+			if err := ValidateInRange("expire-seconds", config.ExpiredSeconds, constants.MinExpireSeconds, constants.MaxExpireSeconds); err != nil {
+				return err
+			}
+		}
 	}
+
 	// Allow 0 for timeout (will use default), otherwise validate range
 	if config.Timeout != 0 {
 		if err := ValidateInRange("timeout", config.Timeout, constants.MinTimeout, constants.MaxTimeout); err != nil {
 			return err
 		}
 	}
+
 	return nil
 }

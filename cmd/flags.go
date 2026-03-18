@@ -48,6 +48,11 @@ func Entry() *cli.Command {
 				return fmt.Errorf("failed to load %s: %w", configFile, err)
 			}
 
+			// Set destinationType with default if not specified
+			if cfg.DestinationType == "" {
+				cfg.DestinationType = constants.DestinationTypeS3
+			}
+
 			if err := utils.ValidateAppConfigs(cfg); err != nil {
 				return err
 			}
@@ -71,40 +76,53 @@ func Entry() *cli.Command {
 				return fmt.Errorf("failed to create kubernetes client: %w", err)
 			}
 
-			s3client, err := s3utils.NewS3Client(ctx, cfg.Region)
-			if err != nil {
-				return fmt.Errorf("failed to create S3 client: %w", err)
-			}
-
-			// Validate bucket existence once before processing nodes
-			if err := s3utils.ValidateBucket(ctx, s3client, cfg.BucketName); err != nil {
-				return err
-			}
-
 			var hasErrors bool
-			for _, nodeName := range cfg.Nodes {
-				url, err := s3utils.PresignUrlPutObject(
-					ctx,
-					s3client,
-					types.PresignUrlPutObjectInput{
-						Region:         cfg.Region,
-						BucketName:     cfg.BucketName,
-						NodeName:       nodeName,
-						ExpiredSeconds: expiredSeconds,
-					},
-				)
+
+			if cfg.DestinationType == constants.DestinationTypeNode {
+				for _, nodeName := range cfg.Nodes {
+					err = k8sclient.Apply(ctx, nodeName, constants.DestinationTypeNode)
+					if err != nil {
+						fmt.Printf("failed to apply nodediagnostic for %s: %s\n", nodeName, err)
+						hasErrors = true
+					} else {
+						fmt.Printf("nodediagnostic.eks.amazonaws.com/%s created\n", nodeName)
+					}
+				}
+			} else {
+				s3client, err := s3utils.NewS3Client(ctx, cfg.Region)
 				if err != nil {
-					fmt.Printf("failed to generate presigned URL for %s: %s\n", nodeName, err)
-					hasErrors = true
-					continue
+					return fmt.Errorf("failed to create S3 client: %w", err)
 				}
 
-				err = k8sclient.Apply(ctx, nodeName, url)
-				if err != nil {
-					fmt.Printf("failed to apply nodediagnostic for %s: %s\n", nodeName, err)
-					hasErrors = true
-				} else {
-					fmt.Printf("nodediagnostic.eks.amazonaws.com/%s created\n", nodeName)
+				// Validate bucket existence once before processing nodes
+				if err := s3utils.ValidateBucket(ctx, s3client, cfg.BucketName); err != nil {
+					return err
+				}
+
+				for _, nodeName := range cfg.Nodes {
+					url, err := s3utils.PresignUrlPutObject(
+						ctx,
+						s3client,
+						types.PresignUrlPutObjectInput{
+							Region:         cfg.Region,
+							BucketName:     cfg.BucketName,
+							NodeName:       nodeName,
+							ExpiredSeconds: expiredSeconds,
+						},
+					)
+					if err != nil {
+						fmt.Printf("failed to generate presigned URL for %s: %s\n", nodeName, err)
+						hasErrors = true
+						continue
+					}
+
+					err = k8sclient.Apply(ctx, nodeName, url)
+					if err != nil {
+						fmt.Printf("failed to apply nodediagnostic for %s: %s\n", nodeName, err)
+						hasErrors = true
+					} else {
+						fmt.Printf("nodediagnostic.eks.amazonaws.com/%s created\n", nodeName)
+					}
 				}
 			}
 

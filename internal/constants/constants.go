@@ -11,7 +11,7 @@ const (
 	// - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeAggregateIdFormat.html
 	NodeNameLength        = 19
 	NodeNamePrefix        = "i-"
-	NodeNameSuffixPattern = "[a-f0-9]{17}"
+	NodeNameSuffixPattern = "^[a-f0-9]{17}$"
 
 	// NodeDiagnostic
 	MinExpireSeconds         = 120
@@ -19,7 +19,9 @@ const (
 	DefaultExpireSeconds     = 300 // seconds
 
 	// Timeout
-	DefaultTimeout = 30 // seconds
+	MinTimeout     = 10 // seconds
+	MaxTimeout     = 300 // seconds
+	DefaultTimeout = 30  // seconds
 
 	// Log generated pattern
 	LogfileNamePattern = "node-diagnostic/log__%s__%s__%s.tar.gz"

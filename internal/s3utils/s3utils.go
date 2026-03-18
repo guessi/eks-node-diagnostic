@@ -30,7 +30,7 @@ func ValidateBucket(ctx context.Context, s3client *s3.Client, bucketName string)
 	if _, err := s3client.HeadBucket(ctx, &s3.HeadBucketInput{
 		Bucket: aws.String(bucketName),
 	}); err != nil {
-		return fmt.Errorf("bucket '%s' not exist or no permission: %w", bucketName, err)
+		return fmt.Errorf("bucket '%s' does not exist or no permission: %w", bucketName, err)
 	}
 	return nil
 }

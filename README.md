@@ -79,7 +79,7 @@ How do I report an issue or submit a feature request?
 
 What is the version requirement for `destinationType: node`?
 
-* The `"node"` destination type requires Node Monitoring Agent >= v1.6.1.
+* The `"node"` destination type requires [Node Monitoring Agent](https://docs.aws.amazon.com/eks/latest/userguide/node-health-nma.html) >= v1.6.1.
 
 ## 👷 Install
 

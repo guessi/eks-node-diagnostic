@@ -40,12 +40,12 @@ func Entry() *cli.Command {
 
 			yamlCfg, err := os.ReadFile(configFile)
 			if err != nil {
-				return fmt.Errorf("failed to open %s", configFile)
+				return fmt.Errorf("failed to open %s: %w", configFile, err)
 			}
 
 			cfg := types.AppConfigs{}
 			if err = yaml.Unmarshal(yamlCfg, &cfg); err != nil {
-				return fmt.Errorf("failed to load %s", configFile)
+				return fmt.Errorf("failed to load %s: %w", configFile, err)
 			}
 
 			if err := utils.ValidateAppConfigs(cfg); err != nil {

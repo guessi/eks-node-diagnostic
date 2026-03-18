@@ -10,7 +10,8 @@ import (
 	k8s "github.com/guessi/eks-node-diagnostic/internal/kubernetes"
 	"github.com/guessi/eks-node-diagnostic/internal/s3utils"
 	"github.com/guessi/eks-node-diagnostic/internal/types"
-	"github.com/guessi/eks-node-diagnostic/internal/utils"
+	"github.com/guessi/eks-node-diagnostic/internal/validate"
+	"github.com/guessi/eks-node-diagnostic/internal/version"
 
 	"github.com/urfave/cli/v3"
 	"sigs.k8s.io/yaml"
@@ -32,7 +33,7 @@ func Entry() *cli.Command {
 				Name:    "version",
 				Aliases: []string{"v"},
 				Usage:   "Print version number",
-				Action:  utils.Version(),
+				Action:  version.Print(),
 			},
 		},
 		Action: func(ctx context.Context, cmd *cli.Command) error {
@@ -53,7 +54,7 @@ func Entry() *cli.Command {
 				cfg.DestinationType = constants.DestinationTypeS3
 			}
 
-			if err := utils.ValidateAppConfigs(cfg); err != nil {
+			if err := validate.AppConfigs(cfg); err != nil {
 				return err
 			}
 

@@ -5,21 +5,13 @@ const (
 	AppName  string = "eks-node-diagnostic"
 	AppUsage string = "friendly NodeDiagnostic generator"
 
-	// Node under Auto Mode would be EC2 instance id, where would be prefixed with "i-" follow by 17-character IDs
-	// - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeIdFormat.html
-	// - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_ModifyIdFormat.html
-	// - https://docs.aws.amazon.com/AWSEC2/latest/APIReference/API_DescribeAggregateIdFormat.html
-	NodeNameLength        = 19
-	NodeNamePrefix        = "i-"
-	NodeNameSuffixPattern = "^[a-f0-9]{17}$"
-
 	// NodeDiagnostic
-	MinExpireSeconds         = 120
-	MaxExpireSeconds         = 86400
-	DefaultExpireSeconds     = 300 // seconds
+	MinExpireSeconds     = 120
+	MaxExpireSeconds     = 86400
+	DefaultExpireSeconds = 300 // seconds
 
 	// Timeout
-	MinTimeout     = 10 // seconds
+	MinTimeout     = 10  // seconds
 	MaxTimeout     = 300 // seconds
 	DefaultTimeout = 30  // seconds
 

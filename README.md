@@ -46,6 +46,8 @@ expiredSeconds: 300  # optional, default: 300
 timeout: 30          # optional, default: 30 (in seconds)
 destinationType: s3  # optional, default: s3, "s3" or "node"
 bucketName: node-diagnostic-EXAMPLE
+
+# the node name should match the NAME from `kubectl get nodes`
 nodes:
 - i-EXAMPLE1111111111
 - i-EXAMPLE2222222222

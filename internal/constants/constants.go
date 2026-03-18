@@ -14,7 +14,6 @@ const (
 	NodeNameSuffixPattern = "[a-f0-9]{17}"
 
 	// NodeDiagnostic
-	NodeDiagnosticApiVersion = "eks.amazonaws.com/v1alpha1"
 	MinExpireSeconds         = 120
 	MaxExpireSeconds         = 86400
 	DefaultExpireSeconds     = 300 // seconds

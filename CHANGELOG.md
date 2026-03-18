@@ -1,5 +1,12 @@
 <!-- markdownlint-disable -->
 
+# v1.9.0 / 2026-03-18
+ 
+* Support "node" destination type for NodeDiagnostic
+* Allow IP-based hostname for node name
+* Bump Kubernetes SDK v0.35.2
+* Miscellaneous improvements
+
 # v1.8.0 / 2026-02-07
 
 * Bump dependencies

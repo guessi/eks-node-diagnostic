@@ -26,14 +26,12 @@ func (k *CustomizedClient) Apply(ctx context.Context, node, url string) error {
 			},
 		},
 	}
-	if _, err := k.client.Resource(
+	_, err := k.client.Resource(
 		schema.GroupVersionResource{
 			Group:    constants.NodeDiagnosticResourceGroup,
 			Version:  constants.NodeDiagnosticResourceVersion,
 			Resource: constants.NodeDiagnosticResourceName,
 		},
-	).Create(ctx, obj, metav1.CreateOptions{}); err != nil {
-		return err
-	}
-	return nil
+	).Create(ctx, obj, metav1.CreateOptions{})
+	return err
 }

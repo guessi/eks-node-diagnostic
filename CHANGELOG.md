@@ -1,5 +1,11 @@
 <!-- markdownlint-disable -->
 
+# v1.9.1 / 2026-03-19
+ 
+* Validate NodeDiagnostic CRD existence before applying resources
+* Fix misleading comment for the `region` parameter passing
+* Built with go1.25.8
+
 # v1.9.0 / 2026-03-18
  
 * Support "node" destination type for NodeDiagnostic

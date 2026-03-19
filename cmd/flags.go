@@ -94,7 +94,7 @@ func Entry() *cli.Command {
 					}
 				}
 			} else {
-				s3client, err := s3utils.NewS3Client(ctx, cfg.Region)
+				s3client, err := s3utils.NewS3Client(ctx, cfg.BucketRegion)
 				if err != nil {
 					return fmt.Errorf("failed to create S3 client: %w", err)
 				}
@@ -109,7 +109,7 @@ func Entry() *cli.Command {
 						ctx,
 						s3client,
 						types.PresignUrlPutObjectInput{
-							Region:         cfg.Region,
+							BucketRegion:   cfg.BucketRegion,
 							BucketName:     cfg.BucketName,
 							NodeName:       nodeName,
 							ExpiredSeconds: expiredSeconds,

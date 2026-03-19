@@ -8,7 +8,7 @@ import (
 
 func TestAppConfigs(t *testing.T) {
 	base := types.AppConfigs{
-		Region:          "us-west-2",
+		BucketRegion:    "us-west-2",
 		DestinationType: "s3",
 		BucketName:      "my-bucket",
 		Nodes:           []string{"i-0123456789abcdef0"},

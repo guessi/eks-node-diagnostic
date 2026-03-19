@@ -65,10 +65,6 @@ func destinationType(dt string) error {
 }
 
 func AppConfigs(config types.AppConfigs) error {
-	if err := empty("region", config.Region); err != nil {
-		return err
-	}
-
 	if err := destinationType(config.DestinationType); err != nil {
 		return err
 	}
@@ -85,6 +81,10 @@ func AppConfigs(config types.AppConfigs) error {
 
 	// S3-specific validations
 	if config.DestinationType == constants.DestinationTypeS3 {
+		if err := empty("region", config.BucketRegion); err != nil {
+			return err
+		}
+
 		if err := empty("bucket-name", config.BucketName); err != nil {
 			return err
 		}

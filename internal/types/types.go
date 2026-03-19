@@ -1,7 +1,7 @@
 package types
 
 type AppConfigs struct {
-	Region          string   `yaml:"region,omitempty"`
+	BucketRegion    string   `yaml:"region,omitempty"`
 	DestinationType string   `yaml:"destinationType,omitempty"`
 	BucketName      string   `yaml:"bucketName,omitempty"`
 	Nodes           []string `yaml:"nodes,omitempty"`
@@ -10,7 +10,7 @@ type AppConfigs struct {
 }
 
 type PresignUrlPutObjectInput struct {
-	Region         string
+	BucketRegion   string
 	BucketName     string
 	NodeName       string
 	ExpiredSeconds int

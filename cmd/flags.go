@@ -77,6 +77,10 @@ func Entry() *cli.Command {
 				return fmt.Errorf("failed to create kubernetes client: %w", err)
 			}
 
+			if err := k8sclient.ValidateCRD(); err != nil {
+				return err
+			}
+
 			var hasErrors bool
 
 			if cfg.DestinationType == constants.DestinationTypeNode {

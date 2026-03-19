@@ -1,5 +1,5 @@
 ---
-# region of the target Amazon EKS cluster
+# region of the target Amazon S3 bucket for storing diagnostic logs
 region: us-east-1
 
 # expiration second of the S3 Presigned URL (default: 300s)
@@ -19,6 +19,5 @@ bucketName: node-diagnostic-EXAMPLE
 # $ kubectl get nodes -o jsonpath='{range .items[*]}{"- "}{.metadata.name}{"\n"}{end}'
 nodes: []
 # nodes:
+# - ip-192-168-100-200.ec2.internal
 # - i-EXAMPLE1111111111
-# - i-EXAMPLE2222222222
-# - i-EXAMPLE3333333333

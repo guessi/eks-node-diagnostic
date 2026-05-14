@@ -25,7 +25,7 @@ To remove these obstacles, [eks-node-diagnostic](https://github.com/guessi/eks-n
 ## 👀 Key differences with [official guidance](https://docs.aws.amazon.com/eks/latest/userguide/auto-get-logs.html)
 
 * Single executable binary only, no Python and no AWS SDK required.
-* Run anywhere, compatible with Linux (amd64/arm64), Windows (amd64 only), macOS (amd64/arm64).
+* Run anywhere, compatible with Linux, macOS and Windows.
 * Friendly setup with [Homebrew](https://brew.sh/) for mac users.
 
 ## 🚀 Quick start

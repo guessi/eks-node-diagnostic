@@ -1,5 +1,11 @@
 <!-- markdownlint-disable -->
 
+# v1.10.0 / 2026-05-14
+
+* Bump Kubernetes SDK v0.35.5
+* Built with go1.25.10
+* Bump dependencies
+
 # v1.9.2 / 2026-03-20
 
 * Handle NodeDiagnostic already exists error with clear message

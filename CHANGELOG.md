@@ -1,5 +1,11 @@
 <!-- markdownlint-disable -->
 
+# v1.11.0 / 2026-06-09
+
+* Bump Kubernetes SDK v0.36.1
+* Built with go1.26.4
+* Bump dependencies
+
 # v1.10.0 / 2026-05-14
 
 * Bump Kubernetes SDK v0.35.5

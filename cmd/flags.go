@@ -11,6 +11,7 @@ import (
 	"github.com/guessi/eks-node-diagnostic/internal/s3utils"
 	"github.com/guessi/eks-node-diagnostic/internal/types"
 	"github.com/guessi/eks-node-diagnostic/internal/validate"
+	"github.com/guessi/eks-node-diagnostic/internal/variables"
 	"github.com/guessi/eks-node-diagnostic/internal/version"
 
 	"github.com/urfave/cli/v3"
@@ -19,8 +20,9 @@ import (
 
 func Entry() *cli.Command {
 	return &cli.Command{
-		Name:  constants.AppName,
-		Usage: constants.AppUsage,
+		Name:    constants.AppName,
+		Usage:   constants.AppUsage,
+		Version: variables.GitVersion,
 		Flags: []cli.Flag{
 			&cli.StringFlag{
 				Name:    "config-file",

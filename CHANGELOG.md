@@ -1,12 +1,16 @@
 <!-- markdownlint-disable -->
 
+# v1.12.1 / 2026-07-28
+
+* Fix missing `--version`/`-v` support
+
 # v1.12.0 / 2026-07-26
 
 * Bump Kubernetes SDK v0.36.3
 * Built with go1.26.5
 * Bump dependencies
 
-# v1.11.0 / 2026-06-09
+ # v1.11.0 / 2026-06-09
 
 * Bump Kubernetes SDK v0.36.1
 * Built with go1.26.4
